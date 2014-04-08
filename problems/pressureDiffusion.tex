@@ -1,0 +1,74 @@
+\section{Pressure Diffusion Benchmark}
+\subsection{Problem description}
+This example Tests the ability of a code to represent pressure dissipation with a slightly compressible fluid. The problem is defined assuming Darcian flow in a porous medium with Dirichlet conditions on the left and right sides of the \SI[scientific-notation=false, round-precision=2]{100.0}{\metre} long by \SI[scientific-notation=false, round-precision=2]{10.0}{\metre} thick domain (Figure~\ref{fig:presDiffFig}). The initial initial condition is uniform pressure (\SI[scientific-notation=false, round-precision=2]{0.1}{\mega\pascal}). The temperature in the simulation is fixed at \SI[scientific-notation=false, round-precision=2]{50}{\degreeCelsius}. Output data for x-axis pressures are calculated for times of \SIlist[scientific-notation=false, round-precision=2]{2.0; 20.0; 200.0}{\second}. The rock matrix is assumed to be incompressible.
+
+\begin{figure}[h]
+	\centering
+	\import{./figures/}{theisFig.pdf_tex}
+	\caption{Model domain}
+	\label{fig:presDiffFig}
+\end{figure}
+
+The analytical solution applied is eq. 4.2.2 of Crank (1975) for that of Section 4.3.3 Uniform initial distribution. Surface concentrations different:
+
+\begin{align}
+	f(x,t)=&P_1+ (P_2-P_1)\frac{x}{X}+\frac{2}{\pi}\sum_{n=1}^{\infty}\left[ \frac{1}{n}(P_2\cos(n\pi)-P_1)\sin \left( \frac{n\pi x}{X}\right)\exp \left( -\frac{D_{\text{eff}}n^2\pi^2 t}{X^2} \right) \right] \nonumber\\
+	+& \frac{4 P_0}{\pi}\sum_{m=0}^{\infty}\left[ \frac{1}{2m+1}\sin\left( \frac{(2m+1)\pi x}{X} \right)\exp \left( -\frac{D_{\text{eff}}(2m+1)^2\pi^2 t}{X^2} \right) \right]
+	\label{eq:anaPresDiff}
+\end{align}
+
+The solution was computed using Mathcad, Version 15, using parameter values given below.
+
+\begin{table}[h]
+	\caption{Dimensions and material properties}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		 System length & $X$ & $\coloneqq$ &  100.0 & \si{\metre} \\
+		 Thickness & $b$ & $\coloneqq$ & 10.0 & \si{\metre} \\
+		 Permeability & $k$ & $\coloneqq$ & 1.0e-12 & \si{\metre\squared} \\
+		 Porosity of matrix& $\theta_{\text{unit}}$ & $\coloneqq$ & 0.50 &  \\
+		 Dynamic viscosity, water & $\mu$ &$\coloneqq$& 0.0005465159967814679 & \si{\pascal\second} \\
+		 Fluid compressibility & $\beta$&$\coloneqq$& 4.4173069067307806e-10 & \si{\per\pascal} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:pressDiffDim}
+\end{table}
+\begin{table}[h]
+	\caption{Boundary and initial conditions}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Initial pressure & $P_0$ & $\coloneqq$ & 1.0e5 & \si{\pascal} \\
+		Pressure, left side & $P_1$ & $\coloneqq$ & 1.0e5 & \si{\pascal} \\
+		Pressure, right side & $P_2$ & $\coloneqq$ & 1.1e5 & \si{\pascal} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:pressDiff}
+\end{table}
+\begin{table}[h]
+	\caption{Derived parameters}
+	\begin{center}
+		\begin{tabular}{lrclcSs}
+			Hydraulic diffusivity & $D_{\text{eff}}$ & $\coloneqq$ & $\dfrac{k}{\theta_{\text{unit}}\beta\mu} $ & $=$ & 8.284561816837185 & \si{\metre\squared\per\second} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:pressDiffDerivPar}
+
+\end{table}
+\subsection{Files}
+\begin{itemize}
+	\item Analytical results are stored in \verb|FluidDiffusionBM-analytical.xlsx|
+	\item Numerical results are stored in \verb|FluidDiffusionBM-FALCON.xlsx|
+	\item The numerical solution input file is \verb|H1_pressure_diffusion.i|
+	\item The numerical solution exodus output file is \verb|H1_pressure_diffusion_outt.e|
+\end{itemize}
+
+\subsection{Results}
+\begin{figure}[h]
+	\begin{center}
+		\setlength\figureheight{8cm} 
+		\setlength\figurewidth{0.80\textwidth} 
+		\input{figures/pressDiff.tikz}
+	\end{center}
+	%\caption{}
+	\label{fig:pressDiff}
+\end{figure}

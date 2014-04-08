@@ -1,0 +1,53 @@
+\documentclass[a4paper,10pt,onecolumn]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+% --- Fonts --- 
+\usepackage[T1]{fontenc}
+\usepackage{lmodern, textcomp}
+% --- Images ---
+\usepackage{tikz, tikzscale, pgf, pgfplots, pgffor}
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+\usetikzlibrary{plotmarks}
+% --- Extras ---
+\usepackage{amsmath, amssymb, setspace, units, fancyvrb, comment, wasysym, setspace, mathtools, import}
+\usepackage[detect-all]{siunitx}
+\usepackage[version=3]{mhchem}
+\usepackage[singlelinecheck=false]{caption}
+\DeclareMathOperator\erf{erf}
+%\graphicspath{{./figures/}}
+
+  \sisetup{%
+%    parse-numbers=true,
+%    input-decimal-markers={.},
+%    input-exponent-markers={eE},
+    tight-spacing=true,
+    round-mode = figures,
+    round-precision = 4,
+    scientific-notation = true,
+%    per-mode={symbol},
+    table-number-alignment=left,
+    table-unit-alignment=left,
+    table-figures-integer=0,
+    table-figures-decimal=3,
+    table-figures-exponent=2
+  }
+
+\title{A Compendium of Geothermal Reservoir Simulator Benchmark Problems}
+\author{International Partnership for Geothermal Technology}
+
+\begin{document}
+\maketitle
+\include{problems/theis}
+\newpage
+\include{problems/cantileveredBeam}
+\newpage
+\phantom{.}
+\newpage
+\include{problems/heatDiffusion}
+\newpage
+\include{problems/pressureDiffusion}
+\end{document}

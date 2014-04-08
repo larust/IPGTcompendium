@@ -1,0 +1,79 @@
+\section{Heat Diffusion Bencmark}
+\subsection{Problem description}
+This example tests the ability of a code to represent heat dissipation by diffusion alone. The problem is defined for a solid with Dirichlet conditions on the left and right sides of the \SI[scientific-notation=false, round-precision=2]{100.0}{\metre} long by \SI[scientific-notation=false, round-precision=2]{10.0}{\metre} thick domain (Figure~\ref{fig:heatDiffFig}<++>). The initial initial condition is uniform temperature of \SI[scientific-notation=false, round-precision=2]{0.0}{\degreeCelsius}. Output data for x-axis pressures are calculated for times of \SIlist[round-precision=2]{1.0e6; 1.0e7}{\second}. %$10^6$ and $10^7$ seconds.1E6 and 1E7 seconds.
+\begin{figure}[h]
+	\centering
+	\import{./figures/}{heatDiffFig.pdf_tex}
+	\caption{Model domain}
+	\label{fig:heatDiffFig}
+\end{figure}
+
+The analytical solution applied is for diffusion in a plane sheet in a semi-infiite domain:
+\begin{equation}
+	T(x,t)=\erf\left(\frac{x}{2\sqrt{D_{\text{eff}}t}} \right)
+	\label{eq:errorFunc}
+\end{equation}
+The solution was computed using Mathcad, Version 15, using parameter values given below.
+
+\begin{table}[h]
+	\caption{Material properties}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Thermal conductivity of fluid & $\lambda_f$ & $\coloneqq$ & 0.68 & \si{\watt\per\metre\per\kelvin} \\
+		Thermal conductivity of rock & $\lambda_r$ & $\coloneqq$ & 2.955 & \si{\watt\per\metre\per\kelvin} \\
+		Specific heat of fluid & $c_{p,f}$ & $\coloneqq$ &4186.0  & \si{\joule\per\kilogram\per\kelvin} \\
+		Specific heat of rock & $c_{p,r}$ & $\coloneqq$ & 920.0 & \si{\joule\per\kilogram\kelvin} \\
+		Density of fluid & $\rho_f$ & $\coloneqq$ & 1000.0 & \si{\kilogram\per\metre\cubed} \\
+		Density of rock & $\rho_r$ & $\coloneqq$ &  2500.0 & \si{\kilogram\per\metre\cubed} \\
+		Porosity & $\theta$ & $\coloneqq$ & 0.20 &  
+	\end{tabular}
+	\end{center}
+	\label{tab:heatDiffResPar}
+\end{table}
+
+\begin{table}[h]
+	\caption{Domain parameters}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Initial temperature & $T_0$ & $\coloneqq$ & 0.0 & \si{\degreeCelsius} \\
+		Injection temperature & $T_{\text{inj}}$ & $\coloneqq$ & 1.0 & \si{\degreeCelsius} \\
+		Flow length & $X$ & $\coloneqq$ & 10.0 & \si{\metre} \\
+		Simulation end time& $t_1$ & $\coloneqq$ & 1.0e5  & \si{\second} \\
+		& $t_2$ & $\coloneqq$ & 5.0e5  & \si{\second} 
+	\end{tabular}
+	\end{center}
+	\label{tab:heatDiffDomPar}
+\end{table}
+
+\setlength{\tabcolsep}{3pt}
+\begin{table}[h]
+	\caption{Derived parameters}
+	\begin{center}
+		\begin{tabular}{lrclcSs}
+			Eff. thermal cond. & $\lambda_{\text{eff}}$ & $\coloneqq$ & $\lambda_f\theta+\lambda_r(1-\theta)$ & $=$ &2.5 & \si{\watt\per\metre\per\kelvin} \\
+ 		Eff. heat capacity & $c_{p,\text{eff}}$ & $\coloneqq$ & $\rho_fc_{p,f}\theta+\rho_r c_{p,r}(1-\theta)$ & $=$ & 2677200.0 & \si{\joule\per\metre\cubed\per\kelvin} \\
+		Thermal diffusivity & $D_{\text{eff}}$ & $\coloneqq$ & $\dfrac{\lambda_{\text{eff}}}{\rho_fc_{p,f}} $ & $=$ & 5.972288580984234e-07 & \si{\metre\squared\per\second} \\
+		Thermal retardation & $R$ & $\coloneqq$ & $\dfrac{c_{p,\text{eff}}}{\theta\rho_fc_{p,f}}$ & $=$ & 3.197802197802198 & \\
+	\end{tabular}
+	\end{center}
+	\label{tab:heatDiffDerivPar}
+\end{table}
+
+\subsection{Files}
+\begin{itemize}
+	\item Analytical results are stored in \verb|HeatDiffusionBM-analytical.xlsx|
+	\item Numerical results are stored in \verb|HeatDiffusionBM-FALCON.xlsx|
+	\item The numerical solution input file is \verb|H1_heat_diffusion.i|
+	\item The numerical solution on exodus output file is \verb|H1_heat_diffusion_out.e|
+\end{itemize}
+
+\subsection{Results}
+\begin{figure}[h!]
+	\begin{center}
+		\setlength\figureheight{8cm} 
+		\setlength\figurewidth{0.8\textwidth} 
+		\input{figures/heatDiff.tikz}
+	\end{center}
+	%\caption{}
+	\label{fig:heatDiff}
+\end{figure}

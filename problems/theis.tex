@@ -1,0 +1,109 @@
+\section{Theis Problem Benchmark}
+\subsection{Problem description}
+
+This benchmark problem provides the solution describing the pressure changes that occur when fluid is produced from a symmetric, infinite, homogeneous, isotropic aquifer of uniform thickness.  The problem tests the ability of a code to conserve mass and model a compressible fluid and tests mass conservation equation and source boundary conditions. The governing equation considered is
+
+\begin{equation}
+	\frac{\partial p}{\partial t} = \frac{T}{S}\left(\frac{\partial^2 p}{\partial r^2}+\frac{1}{r}\frac{\partial p}{\partial r} \right)
+	\label{eq:Theis}
+\end{equation}
+
+The problem is defined for a disk-shaped domain with Neumann condition representing pumping on the inside of the domain at well radius, $r_{\text{well}}$ with outer radial dimension sufficiently distant to effect a semi-infinite domain (Figure~\ref{fig:theisFig}). The Fluid properties are prescribed for \SI[scientific-notation=false,round-precision=2]{50}{\degreeCelsius}. Output data for x-axis pressures are calculated for times of \SIlist[scientific-notation=false, round-precision=2]{2.0; 20.0; 200.0}{\second}. %$10^6$ and $10^7$ seconds.
+
+\begin{figure}[h]
+	\centering
+	%\input{theisFig.pdf_tex}
+	\import{./figures/}{theisFig.pdf_tex}
+	\caption{Model domain}
+	\label{fig:theisFig}
+\end{figure}
+
+The analytical solution of this problem introduces the similarity variable
+\begin{equation}
+	u=\frac{r^2 S}{4Tt}
+	\label{eq:simVar}
+\end{equation}
+which is then used to determine the drawdown
+\begin{equation}
+	s=\frac{Q_v}{4\pi T}f(u)
+	\label{eq:drawdown}
+\end{equation}
+where $f(u)$ is the exponential integral, defined as
+\begin{equation}
+	f(u)=\int_u^\infty \frac{e^{-t}}{t}dt.
+	\label{eq:expInt}
+\end{equation}
+The analytical solution is shown on Figure~\ref{fig:Theis} using parameters from Tables~\ref{tab:TheisMatprop} and~\ref{tab:TheisFluprop}.
+
+The numerical solution was computed with the FALCON simulator from INL. Specified properties for the homogeneous solid and fluid are given in Tables~\ref{tab:TheisMatprop} and~\ref{tab:TheisFluprop}. FALCON computes fluid properties (viscosity, density) from lookup tables based on the IAWPS-97 equation of state. The FALCON-calculated values match those used for calculation of the analytical solution.
+
+
+\begin{table}[h]
+	\caption{Reservoir properties}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Radius of injection well & $r_{\text{well}}$ & $\coloneqq$ & 1.0 & \si{\metre} \\
+		Radius of outer limit & $r_{\text{outer}}$ &$\coloneqq$& 100.0 & \si{\metre} \\
+		Thickness & $b$&$\coloneqq$& 1.0 & \si{\metre} \\
+		Permeability & $k$&$\coloneqq$& 9.869233e-13 & \si{\metre\squared} \\
+		Porosity of matrix & $\theta_{\text{unit}}$&$\coloneqq$& 0.50 & - \\
+	\end{tabular}
+	\end{center}
+	\label{tab:TheisMatprop}
+\end{table}
+\begin{table}[h]
+	\caption{Fluid properties}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Ambient fluid pressure & $p_{\text{amb}}$ & $\coloneqq$ & 1.0e5 & \si{\pascal} \\
+		Ambient fluid temperature & $T_{\text{amb}}$ & $\coloneqq$ & 323.15 & \si{\kelvin} \\
+		Volumetric flow rate & $Q_v$ & $\coloneqq$ & 1.6666666666666667e-05 & \si{\metre\cubed\per\second} \\
+		Dynamic viscosity, water & $\mu$ &$\coloneqq$& 0.0005465159967814679 & \si{\pascal\second} \\
+		Fluid compressibility & $\beta$&$\coloneqq$& 4.4173069067307806e-10 & \si{\per\pascal} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:TheisFluprop}
+\end{table}
+
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[h]
+	\caption{Derived parameters}
+	\begin{center}
+		\begin{tabular}{lrclcSs}
+		Hydraulic diffusivity & $D_{\text{eff}}$ & $\coloneqq$ & $ \dfrac{k}{\theta_{\text{unit}}\beta\mu}$ & $=$ &8.17622708732695&\si{\metre\squared\per\second} \\
+		Transmissivity of unit & $T_{\text{unit}}$ & $\coloneqq$ & $k b $& $=$ &9.869233e-13& \si{\metre\cubed} \\
+		Storativity of unit & $S_{\text{unit}}$ & $\coloneqq$ & $b\theta_{\text{unit}}\beta$& $=$ &2.2086534533653903e-10&\si{\metre\per\pascal} \\
+		Implied hydraulic $K$ & $K_{g}$ & $\coloneqq$ & $\dfrac{k\rho g}{\mu}$& $=$ &1.749739091752754e-05&\si{\metre\per\day} \\
+		Injection velocity & $v_{\text{inj}}$ & $\coloneqq$ & $\dfrac{Q_v}{2\pi r_{\text{well}}b}$& $=$ &2.6525823848649226e-06&\si{\metre\per\second} \\
+%		Total volume of fluid injected & $V_{\text{inj}}$ & $\coloneqq$ & $Q_v t_3 $& $=$ &0.0033333333333333335&\si{\metre\cubed} \\
+		Reynolds number at well & $\text{Re}$ & $\coloneqq$ & $\dfrac{2 r_{\text{well}}\rho v_{\text{inj}}}{\mu}$& $=$ &9.591092816142062& \\
+
+		Transmissivity & $T$ & $\coloneqq$ & $\dfrac{1}{\mu}T_{\text{unit}}\rho g $& $=$ & 1.7735287141919426e-05& \si{\metre\squared\per\second} \\
+
+		Storativity & $S$ & $\coloneqq$ & $S_{\text{unit}}\rho g$& $=$ &  2.140763450623906e-06&  -
+	\end{tabular}
+	\end{center}
+	\label{tab:TheisDerivPar}
+\end{table}
+
+\subsection{Files}
+\begin{itemize}
+	\item Analytical results are stored in \verb|TheisProblemBM-analytical.xlsx|
+	\item Numerical results are stored in \verb|TheisProblemBM-FALCON.xlsx|
+	\item The numerical solution input file is \verb|TheisProblem.i|
+	\item The numerical solution exodus output file is \verb|TheisProblem_out.e|
+\end{itemize}
+%col1=['Hydraulic diffusivity','Transmissivity of unit','Storativity of unit','Implied hydraulic $K$','Injection velocity','Total volume of fluid injected','Reynolds number at well']
+\newpage
+\subsection{Results}
+
+\begin{figure}[h!]
+	\begin{center}
+		\setlength\figureheight{8cm} 
+		\setlength\figurewidth{0.8\textwidth} 
+		\input{figures/Theis.tikz}
+	\end{center}
+	\caption{The solution to the Theis problem}
+	\label{fig:Theis}
+\end{figure}

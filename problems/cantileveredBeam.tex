@@ -1,0 +1,86 @@
+\section{Cantilevered Steel Beam Benchmark}
+\subsection{Problem description}
+This example tests the ability of a code to describe a common mechanical behaviour, the bending of a cantilevered beam with a uniform load applied on its upper face. The problem is defined for a steel \SI[scientific-notation=false, round-precision=2]{1.0}{\metre} long, \SI[scientific-notation=false, round-precision=2]{0.1}{\metre} thick, steel beam. The initial condition is zero displacement. Output data for y-axis displacements are shown for steady state.
+
+
+\begin{table}
+	\caption{Problem dimensions}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Length of beam & $L_x$ & $\coloneqq$ & 1.0 & \si{\metre} \\
+		Thickness of beam& $h$ & $\coloneqq$ & 0.010 & \si{\metre} \\
+		Loading& $q$ & $\coloneqq$ & 1.0e3 & \si{\pascal} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:beamDim}
+\end{table}
+\begin{table}
+	\caption{Material properties}
+	\begin{center}
+	\begin{tabular}{lrcSs}
+		Density of steel& $\rho_r$ & $\coloneqq$ & 7850.0 & \si{\kilogram\per\metre\cubed} \\
+		Youngs modulus of steel& $E_r$ & $\coloneqq$ & 2.0e11 & \si{\pascal} \\
+		Shear modulus of steel& $G_r$ & $\coloneqq$ & 0.30e11 & \si{\pascal} \\
+		Poisson's ratio & $\nu_r$ & $\coloneqq$ & 0.225 &  \\
+	\end{tabular}
+	\end{center}
+	\label{tab:beamMatProps}
+\end{table}
+
+%\renewcommand{\arraystretch}{1.5}
+\begin{table}[h]
+	\caption{Derived parameters}
+	\begin{center}
+		\begin{tabular}{lrclcSs}
+		Total force applied& $F$ & $\coloneqq$ & $qL_x$ & $=$ &1000.0 & \si{\newton\per\metre} \\
+		Flexural rigidity of plate& $D$ & $\coloneqq$ & $\dfrac{E_r h^3}{12(1-\nu_2^2)}$ & $=$ &  17555.40926047838& \si{\joule} \\
+
+		Moment of inertia & $I$ & $\coloneqq$ & $\dfrac{D}{E_r}$ & $=$ &  8.7777046302391941e-08 & \si{\metre\tothe{4}} 
+		%& $$ & $\coloneqq$ & $ $ & $=$ & & \si{} \\
+		%& $$ & $\coloneqq$ & $ $ & $=$ & & \si{} \\
+		%& $$ & $\coloneqq$ & $ $ & $=$ & & \si{} \\
+	\end{tabular}
+	\end{center}
+	\label{tab:beamDerivPar}
+\end{table}
+A reference for the analytical solution is Turcotte and Schubert, page 117. The solution was computed using Mathcad, Version 15, using parameter values and equations shown below. The numerical solution was computed with the FALCON simulator from INL. Specified dimensions and properties for the material (steel) are highlighted above.
+
+\subsection{Files}
+\begin{itemize}
+	\item Analytical results are stored in \verb|CantileveredSteelBeamBM-analytical.xlsx|
+	\item Numerical results are stored in \verb|CantileveredSteelBeamBM-FALCON.xlsx|
+	\item The numerical solution input file is \verb|CantileveredSteelBeamBM.i|
+	\item The numerical solution exodus output file is \verb|CantileveredSteelBeamBM_out.e|
+\end{itemize}
+
+\subsection{Results}
+\begin{table}[h]
+	\caption{Analytical solution of the beam problem}
+	\begin{center}
+		\begin{tabular}{lrcl}
+			Bending moment& $M(x)$ & $\coloneqq$ & $\dfrac{1}{2}q(L_x-x)^2$ \\
+			Displacement solution& $w(x)$ & $\coloneqq$ & $\dfrac{qx^2}{D}\left( \dfrac{x^2}{24}-\dfrac{L_x x}{6}+\dfrac{L_x^2}{4} \right)$  \\
+			Maximum bending stress& $\sigma_{xx,\text{max}}$ & $\coloneqq$ & $-\dfrac{6M(x)}{h^2}$ \\
+	\end{tabular}
+	\end{center}
+	\label{tab:beamSolPar}
+\end{table}
+
+\begin{figure}[h]
+	\begin{center}
+		\setlength\figureheight{8cm} 
+		\setlength\figurewidth{0.8\textwidth} 
+		\input{figures/beamDisp.tikz}
+	\end{center}
+	%\caption{Fractional position along a plate of length L}
+	\label{fig:BeamDisp}
+\end{figure}
+\begin{figure}[h]
+	\begin{center}
+		\setlength\figureheight{8cm} 
+		\setlength\figurewidth{0.8\textwidth} 
+		\input{figures/beamStress.tikz}
+	\end{center}
+	%\caption{Fractional position along a plate of length L}
+	\label{fig:BeamStress}
+\end{figure}
